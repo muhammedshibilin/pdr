@@ -38,6 +38,9 @@ const SOCIAL_LINKS = [
   }
 ];
 
+
+
+
 export default function Home() {
   const cursorRef = useRef<HTMLDivElement>(null);
   const [timeLeft, setTimeLeft] = useState({
@@ -47,19 +50,32 @@ export default function Home() {
     seconds: '00'
   });
 
+  
+  
+
   // Mouse movement effect
   useEffect(() => {
     const cursor = cursorRef.current;
     if (!cursor) return;
-
+  
     const onMouseMove = (e: MouseEvent) => {
-      requestAnimationFrame(() => handleMouseMove(e, cursor));
+      handleMouseMove(e, cursor);
+      cursor.style.opacity = '1';
     };
-    
-    window.addEventListener('mousemove', onMouseMove);
-    return () => window.removeEventListener('mousemove', onMouseMove);
+  
+    const onMouseLeave = () => {
+      cursor.style.opacity = '0';
+    };
+  
+    document.addEventListener('mousemove', onMouseMove);
+    document.addEventListener('mouseleave', onMouseLeave);
+  
+    return () => {
+      document.removeEventListener('mousemove', onMouseMove);
+      document.removeEventListener('mouseleave', onMouseLeave);
+    };
   }, []);
-
+  
   // Countdown timer effect
   useEffect(() => {
     const calculateTimeLeft = () => {
@@ -117,7 +133,7 @@ export default function Home() {
           </p>
           
           {/* Countdown - Updated for better mobile layout */}
-          <div className="flex flex-wrap justify-center gap-4 md:gap-8 mb-16">
+          <div className="countdown-wrapper mb-16">
             {[
               { label: 'Days', value: timeLeft.days },
               { label: 'Hours', value: timeLeft.hours },
@@ -125,11 +141,11 @@ export default function Home() {
               { label: 'Seconds', value: timeLeft.seconds }
             ].map(({ label, value }, index) => (
               <div key={label} className="flex items-center">
-                <div className="flex flex-col items-center">
-                  <span className="text-3xl md:text-6xl font-bold countdown-item">{value}</span>
-                  <span className="text-xs md:text-sm mt-1 text-gray-600">{label}</span>
+                <div className="countdown-item">
+                  <span className="countdown-number">{value}</span>
+                  <span className="countdown-label">{label}</span>
                 </div>
-                {index < 3 && <span className="text-3xl md:text-6xl font-bold mx-2 md:mx-4">:</span>}
+                {index < 3 && <span className="countdown-separator">:</span>}
               </div>
             ))}
           </div>

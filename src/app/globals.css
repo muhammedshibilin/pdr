@@ -29,34 +29,59 @@ body {
 }
 
 .custom-cursor {
-  width: 30px;
-  height: 30px;
+  width: 20px;
+  height: 20px;
   background: transparent;
   border: 2px solid var(--accent);
   border-radius: 50%;
   position: fixed;
   pointer-events: none;
   z-index: 9999;
-  transform: translate(0, 0);
-  transition: width 0.2s, height 0.2s;
-  mix-blend-mode: difference;
+  opacity: 0;
+  transition: transform 0.1s ease-out, opacity 0.2s ease-out;
 }
 
-.custom-cursor::after {
+
+.custom-cursor::before {
   content: '';
+  width: 6px;
+  height: 6px;
+  background: var(--accent);
+  border-radius: 50%;
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 8px;
-  height: 8px;
-  background: var(--accent);
-  border-radius: 50%;
 }
 
+.custom-cursor.hover {
+  width: 40px;
+  height: 40px;
+  mix-blend-mode: difference;
+}
+
+/* Hide default cursor */
+body {
+  cursor: none;
+}
+
+a, 
+button, 
+[role="button"] {
+  cursor: none;
+}
+
+/* Show default cursor on touch devices */
 @media (hover: none) {
   .custom-cursor {
     display: none;
+  }
+  
+  body, 
+  a, 
+  button, 
+  [role="button"] {
+    cursor: auto;
   }
 }
 
@@ -89,23 +114,54 @@ body {
   color: transparent;
 }
 
-.countdown-item {
-  font-feature-settings: "tnum";
+.countdown-wrapper {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
   font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+.countdown-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  min-width: 80px;
+}
+
+.countdown-number {
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1;
   transition: all 0.3s ease;
-  min-width: 2ch;
-  text-align: center;
+}
+
+.countdown-label {
+  font-size: 0.875rem;
+  color: #666;
+  margin-top: 0.5rem;
+}
+
+.countdown-separator {
+  font-size: 3.5rem;
+  font-weight: 700;
+  line-height: 1;
+  margin-top: -0.5rem;
+  opacity: 0.5;
 }
 
 @media (max-width: 640px) {
-  .countdown-item {
+  .countdown-number {
     font-size: 2rem;
   }
-}
-
-.countdown-item:hover {
-  transform: scale(1.1);
-  color: var(--accent);
+  
+  .countdown-separator {
+    font-size: 2rem;
+  }
+  
+  .countdown-item {
+    min-width: 60px;
+  }
 }
 
 @keyframes fadeIn {
