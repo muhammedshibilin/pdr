@@ -1,9 +1,9 @@
 @import "tailwindcss";
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
-  --accent: #3b82f6;
+  --background: #ffffff;
+  --foreground: #000000;
+  --accent: #000000;
 }
 
 @theme inline {
@@ -29,15 +29,35 @@ body {
 }
 
 .custom-cursor {
-  width: 20px;
-  height: 20px;
-  background: var(--accent);
+  width: 30px;
+  height: 30px;
+  background: transparent;
+  border: 2px solid var(--accent);
   border-radius: 50%;
   position: fixed;
   pointer-events: none;
   z-index: 9999;
+  transform: translate(0, 0);
+  transition: width 0.2s, height 0.2s;
   mix-blend-mode: difference;
-  transition: transform 0.1s ease;
+}
+
+.custom-cursor::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 8px;
+  height: 8px;
+  background: var(--accent);
+  border-radius: 50%;
+}
+
+@media (hover: none) {
+  .custom-cursor {
+    display: none;
+  }
 }
 
 .service-card {
@@ -67,4 +87,37 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   color: transparent;
+}
+
+.countdown-item {
+  font-feature-settings: "tnum";
+  font-variant-numeric: tabular-nums;
+  transition: all 0.3s ease;
+  min-width: 2ch;
+  text-align: center;
+}
+
+@media (max-width: 640px) {
+  .countdown-item {
+    font-size: 2rem;
+  }
+}
+
+.countdown-item:hover {
+  transform: scale(1.1);
+  color: var(--accent);
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.8s ease-out forwards;
+}
+
+.animate-fade-in-delay {
+  animation: fadeIn 0.8s ease-out 0.2s forwards;
+  opacity: 0;
 }
