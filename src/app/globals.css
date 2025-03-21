@@ -177,3 +177,18 @@ button,
   animation: fadeIn 0.8s ease-out 0.2s forwards;
   opacity: 0;
 }
+
+/* Add these button styles */
+button {
+  font-weight: 500;
+  font-size: 0.875rem;
+  transition: all 0.3s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button:active {
+  transform: translateY(0);
+}

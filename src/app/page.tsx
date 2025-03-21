@@ -38,8 +38,10 @@ const SOCIAL_LINKS = [
   }
 ];
 
-
-
+// Add this type definition
+type FollowState = {
+  [key: string]: boolean;
+};
 
 export default function Home() {
   const cursorRef = useRef<HTMLDivElement>(null);
@@ -49,9 +51,11 @@ export default function Home() {
     minutes: '00',
     seconds: '00'
   });
-
-  
-  
+  const [followStates, setFollowStates] = useState<FollowState>({
+    Instagram: false,
+    Facebook: false,
+    YouTube: false,
+  });
 
   // Mouse movement effect
   useEffect(() => {
@@ -156,20 +160,47 @@ export default function Home() {
             Join us on this journey to transform your business presence.
           </p>
 
-          {/* Social Links */}
-          <div className="flex gap-8 items-center justify-center">
-            {SOCIAL_LINKS.map((social) => (
-              <a
-                key={social.name}
-                href={social.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-gray-600 hover:text-black transition-colors"
-                aria-label={`Follow us on ${social.name}`}
-              >
-                {social.icon}
-              </a>
-            ))}
+          {/* Social Links with single follow button */}
+          <div className="flex flex-col items-center gap-8">
+            <div className="flex gap-8 items-center justify-center">
+              {SOCIAL_LINKS.map((social) => (
+                <a
+                  key={social.name}
+                  href={social.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-600 hover:text-black transition-colors"
+                  aria-label={`Follow us on ${social.name}`}
+                >
+                  {social.icon}
+                </a>
+              ))}
+            </div>
+            <button
+              onClick={() => setFollowStates(prev => ({
+                Instagram: !prev.Instagram,
+                Facebook: !prev.Instagram,
+                YouTube: !prev.Instagram
+              }))}
+              className={`px-6 py-2 rounded-full transition-all duration-300 ${
+                followStates.Instagram
+                  ? 'bg-gray-200 text-gray-800'
+                  : 'bg-black text-white hover:bg-gray-800'
+              }`}
+            >
+              <span className="flex items-center gap-2">
+                {followStates.Instagram ? (
+                  <>
+                    <span>Following</span>
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                  </>
+                ) : (
+                  'Follow'
+                )}
+              </span>
+            </button>
           </div>
         </div>
       </div>
